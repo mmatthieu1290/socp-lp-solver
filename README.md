@@ -117,19 +117,20 @@ Preprocessing:
         - via sample-based estimation
 
 Initialize:
-    $k = 0$
-    $Φ^{0} = 1$  (vector of ones)
-    $w^{0}$ arbitrary (e.g., constant vector)
+
+$k = 0$
+$Φ^{0} = 1$  (vector of ones),
+$w^{0}$ arbitrary (e.g., constant vector).
 
 Repeat:
-    Step 1: Solve weighted SOCP subproblem
-        minimize   $\|\Phi\otimes w\|_1 + C \xi$
-        subject to
-            $\kappa_1 \|S_1^T w\| \leq w^\top \mu_1 + b - 1 + \xi$
-            $\kappa_2 \|S_2^T w\| \leq w^\top \mu_2 + b - 1 + \xi$
-            $\xi\geq0$
+Step 1: Solve weighted SOCP subproblem
+minimize   $\|\Phi\otimes w\|_1 + C \xi$
+subject to
+$\kappa_1 \|S_1^T w\| \leq w^\top \mu_1 + b - 1 + \xi$
+$\kappa_2 \|S_2^T w\| \leq w^\top \mu_2 + b - 1 + \xi$
+$\xi\geq0$
 
-        (solved via CVX)
+(solved via CVX)
 
     Step 2: Update IRL1 weights
        $\Phi_i^{k+1}=\dfrac{p}{(|w_i^k|+\varepsilon)^{1-p}}$, for $i=1,\cdots,n$
