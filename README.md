@@ -103,27 +103,27 @@ and avoids singular behavior at $w_j = 0$.
 
 IRL1 for the $\ell_p$-XiSOCP Model ($0 < p < 1$)
 
-Input:
+**Input:**
     Training data $(X, y)$<br>
     Parameters: $p, c, \varepsilon > 0$, $\kappa = (\kappa_1, \kappa_2)$<br>
     Maximum iterations_ Kmax<br>
     Tolerance: Tol
 
-Preprocessing:
+**Preprocessing:**
     Split data into classes A ($y=+1$) and B ($y=-1$)<br>
     Compute class means $\mu_1$, $\mu_2$<br>
     Compute matrices $S_1$, $S_2$:<br>
         - either via Cholesky of covariance matrices, or<br>
         - via sample-based estimation
 
-Initialize:
+**Initialize:**
 
 $k = 0$ <br>
 $Φ^{0} = 1$  (vector of ones), <br>
 $w^{0}$ arbitrary (e.g., constant vector).
 
 Repeat:<br>
-Step 1: Solve weighted SOCP subproblem<br>
+**Step 1:** Solve weighted SOCP subproblem<br>
 minimize   $\|\Phi\otimes w\|_1 + C \xi$<br>
 subject to<br>
 $\kappa_1 \|S_1^T w\| \leq w^\top \mu_1 + b - 1 + \xi$<br>
@@ -132,16 +132,16 @@ $\xi\geq0$
 
 (solved via CVX)
 
-Step 2: Update IRL1 weights<br>
+**Step 2:** Update IRL1 weights<br>
 $\Phi_i^{k+1}=\dfrac{p}{(|w_i^k|+\varepsilon)^{1-p}}$, for $i=1,\cdots,n$<br>
 
-Step 3: Check convergence<br>
+**Step 3:** Check convergence<br>
 if \|w^{k+1} - w^k||_\infty < Tol<br>
-stop<br>
+stop
 
-Step 4: $k \leftarrow k + 1$<br>
+**Step 4:** $k \leftarrow k + 1$
 
-Output:<br>
+**Output:** <br>
 Final solution $(w, b,\xi)$<br>
 Sparse feature set: indices where $|w_i| > threshold$
 
