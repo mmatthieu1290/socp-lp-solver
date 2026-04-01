@@ -4,7 +4,7 @@
 <div align="center">
 
 
-# SOCP-LP-SOLVERS
+# SOCP-LP-SOLVER
 
 <em>Empowering Smarter Decisions Through Advanced Optimization</em>
 

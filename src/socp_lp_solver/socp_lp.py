@@ -366,7 +366,7 @@ class SOCP_Lp(BaseEstimator, ClassifierMixin):
         w_old = np.random.randn(n)
         b_old = np.random.randn(1)
         
-        xi_old = np.random.rand(2)
+        xi_old = np.random.rand(1)
 
         phi_k_abs = np.ones(n)
         err = 2 * self.tol
@@ -375,11 +375,11 @@ class SOCP_Lp(BaseEstimator, ClassifierMixin):
         w  = cp.Variable(n)
         b  = cp.Variable()
         
-        xi = cp.Variable(2,nonneg=True)
+        xi = cp.Variable(1,nonneg=True)
         #   w^T μ1 + b ≥ 1 − xi_1 + κ1 ||S1^T w||
-        constr1 = self.kappa1 * cp.norm(S1.T @ w, 2) <= w @ mu1 + b - 1 + xi[0]
+        constr1 = self.kappa1 * cp.norm(S1.T @ w, 2) <= w @ mu1 + b - 1 + xi
         # −(w^T μ2 + b) ≥ 1 − xi_2 + κ2 ||S2^T w||
-        constr2 = self.kappa2 * cp.norm(S2.T @ w, 2) <= -(w @ mu2 + b) - 1 + xi[1]
+        constr2 = self.kappa2 * cp.norm(S2.T @ w, 2) <= -(w @ mu2 + b) - 1 + xi
         constraints = [constr1, constr2]   # (xi ≥ 0 ya está en la definición de la variable) 
 
         self.n_non_zeros_coef_per_iteration_ = []    
