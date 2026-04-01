@@ -103,47 +103,44 @@ and avoids singular behavior at $w_j = 0$.
 
 IRL1 for the $\ell_p$-XiSOCP Model ($0 < p < 1$)
 
-Input:
-    Training data $(X, y)$
-    Parameters: $p, c, \varepsilon > 0$, $\kappa = (\kappa_1, \kappa_2)$
-    Maximum iterations_ Kmax
+**Input:** <br>
+    Training data $(X, y)$<br>
+    Parameters: $p, c, \varepsilon > 0$, $\kappa = (\kappa_1, \kappa_2)$<br>
+    Maximum iterations_ Kmax<br>
     Tolerance: Tol
 
-Preprocessing:
-    Split data into classes A ($y=+1$) and B ($y=-1$)
-    Compute class means $\mu_1$, $\mu_2$
-    Compute matrices $S_1$, $S_2$:
-        - either via Cholesky of covariance matrices, or
+**Preprocessing:** <br>
+    Split data into classes A ($y=+1$) and B ($y=-1$)<br>
+    Compute class means $\mu_1$, $\mu_2$<br>
+    Compute matrices $S_1$, $S_2$:<br>
+        - either via Cholesky of covariance matrices, or<br>
         - via sample-based estimation
 
-Initialize:
-
-$k = 0$ \\
-$Φ^{0} = 1$  (vector of ones), \\
+**Initialize:** <br>
+$k = 0$ <br>
+$Φ^{0} = 1$  (vector of ones), <br>
 $w^{0}$ arbitrary (e.g., constant vector).
 
-Repeat:
-Step 1: Solve weighted SOCP subproblem
-minimize   $\|\Phi\otimes w\|_1 + C \xi$
-subject to
-$\kappa_1 \|S_1^T w\| \leq w^\top \mu_1 + b - 1 + \xi$
-$\kappa_2 \|S_2^T w\| \leq w^\top \mu_2 + b - 1 + \xi$
+**Repeat:** <br>
+**Step 1:** Solve weighted SOCP subproblem via CVX <br>
+minimize   $\|\Phi\otimes w\|_1 + C \xi$<br>
+subject to<br>
+$\kappa_1 \|S_1^T w\| \leq w^\top \mu_1 + b - 1 + \xi$<br>
+$\kappa_2 \|S_2^T w\| \leq w^\top \mu_2 + b - 1 + \xi$<br>
 $\xi\geq0$
 
-(solved via CVX)
+**Step 2:** Update IRL1 weights<br>
+$\Phi_i^{k+1}=\dfrac{p}{(|w_i^k|+\varepsilon)^{1-p}}$, for $i=1,\cdots,n$<br>
 
-    Step 2: Update IRL1 weights
-       $\Phi_i^{k+1}=\dfrac{p}{(|w_i^k|+\varepsilon)^{1-p}}$, for $i=1,\cdots,n$
+**Step 3:** Check convergence<br>
+if $\|w^{k+1} - w^k\|_\infty < Tol$<br>
+stop
 
-    Step 3: Check convergence
-        if  \|w^{k+1} - w^k||_\infty < Tol
-            stop
+**Step 4:** $k \leftarrow k + 1$
 
-    Step 4: $k \leftarrow k + 1$
-
-Output:
-    Final solution $(w, b,\xi)$
-    Sparse feature set: indices where $|w_i| > threshold$
+**Output:** <br>
+Final solution $(w, b,\xi)$<br>
+Sparse feature set: indices where $|w_i| > threshold$
 
 ## Example
 
