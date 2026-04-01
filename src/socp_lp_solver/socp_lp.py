@@ -17,9 +17,6 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
 
     It is a robust version with respecto to noise of SVM_Lp.
 
-    The smoothing parameter :math:`\varepsilon>0` makes the objective locally
-    Lipschitz and avoids singular behavior at :math:`w_j=0`.
-
     Parameters
     ----------
     p : float, default=0.5
@@ -35,8 +32,7 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
               Exponent controlling probability of good classification of negative class. Must satisfy 0 < alpha_2 < 1.
               
     epsilon : float, default=1e-5
-        Smoothing/approximation parameter :math:`\varepsilon>0` used in
-        :math:`(|w_j|+\varepsilon)^p`.
+        Smoothing/approximation parameter for p-quasi-norm. It ensures that the objective function is differenciable and lipschitz.
 
     tol : float, default=1e-4
          Tolerance for stopping criteria.  
@@ -281,8 +277,7 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
 
         Returns
         -------
-        self : object
-        Fitted estimator.
+        self : fitted estimator.
         """        
 
         y = y.copy()
@@ -421,6 +416,20 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
        return predictions
     
     def predict_proba(self,X):
+       
+       """
+       Predict probability for class labels for samples in X.
+
+       Parameters
+       ----------
+       X : array-like of shape (n_samples, n_features)
+
+       Returns
+       -------
+       y_pred_prob : ndarray of shape (n_samples,2)
+        The first column is the probability for each observation to belong to 
+        negative or zero class, the second column is the probability for each observation to belong to positive class.
+       """    
 
        X = X.copy() 
 
