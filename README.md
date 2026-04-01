@@ -7,10 +7,6 @@
 # SOCP-LP-SOLVER
 
 
-
-</div>
-<br>
-
 ---
 
 ## Table of Contents
