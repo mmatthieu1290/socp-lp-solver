@@ -251,6 +251,7 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
 
                 mask_selected_features = np.abs(self.coef_) > self.tol_select_features
                 self.n_selected_features_ = int(mask_selected_features.sum())
+                self.n_non_zeros_coef_per_iteration_ = None
 
                 try: 
                    self.selected_feature_names_ = self.feature_names_in_[mask_selected_features]
