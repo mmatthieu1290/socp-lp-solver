@@ -133,7 +133,7 @@ $\xi\geq0$
 $\Phi_i^{k+1}=\dfrac{p}{(|w_i^k|+\varepsilon)^{1-p}}$, for $i=1,\cdots,n$<br>
 
 **Step 3:** Check convergence<br>
-if $\|w^{k+1} - w^k||_\infty < Tol$<br>
+if $\|w^{k+1} - w^k\|_\infty < Tol$<br>
 stop
 
 **Step 4:** $k \leftarrow k + 1$
