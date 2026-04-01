@@ -41,7 +41,7 @@
 
 ## Overview
 
-socp-lp-solvers is a Python package that provides advanced solvers for Support Vector Machine (SVM) optimization problems using Second-Order Cone Programming (SOCP) and Linear Programming (LP). Designed for high-dimensional and large-scale data, it enables efficient, robust, and interpretable machine learning models.
+socp-lp-solver is a Python package that provides advanced solvers for Support Vector Machine (SVM) optimization problems using Second-Order Cone Programming (SOCP). Designed for high-dimensional and large-scale data, it enables efficient, robust, and interpretable machine learning models.
 
 **Authors:** Miguel Carrasco, Julio Lopez, Matthieu Marechal
 
@@ -58,19 +58,6 @@ This project aims to simplify and accelerate the development of SVM-based soluti
 ---
 
 ## Mathematical model 
-
-### SVM_Lp
-
- This estimator solves the following optimization problem:
-
-$$
-\min_{w,b,\xi}\ \sum_{j=1}^n (|w_j|+\varepsilon)^p + C\sum_{i=1}^m \xi_i
-\quad \mathrm{s.t.}\quad
-y_i (w^\top x_i + b) \ge 1 - \xi_i,\ \xi_i \ge 0,\ i=1,\dots,m.
-$$
-
-The smoothing parameter $\varepsilon>0$ makes the objective locally
-Lipschitz and avoids singular behavior at $w_j=0$. The vector $x_i$ contains the features of $i$-th observation and $y_i=\pm1$ is its class.  
 
 ### SOCP_Lp
 
@@ -111,27 +98,10 @@ This model can be interpreted as a robust version of SVM_Lp.
 The smoothing parameter $\varepsilon > 0$ makes the objective locally Lipschitz
 and avoids singular behavior at $w_j = 0$.
 
-## Examples
+## Example
 
-### SVM_Lp
 
-    from svm_socp_lp_solvers import SVM_Lp
-    import pandas as pd
-
-    url = "https://raw.githubusercontent.com/mmatthieu1290/svm-socp-lp-solvers/main/datos_Titanic.xlsx"
-    df = pd.read_excel(url, engine="openpyxl")
-    X = df.iloc[:,:-1]
-    y = df.iloc[:,-1]
-
-    svm = SVM_Lp(C = 1e7,eps = 1e-4,tol_select_features = 1e-3)
-    svm.fit(X,y)
-
-    print("Coefs : ",svm.coef_)
-    print("Selected features : ",svm.selected_feature_names_)
-
-### SOCP_Lp 
-
-    from svm_socp_lp_solvers import SOCP_Lp
+    from socp_lp_solver import SOCP_Lp
     import pandas as pd
     
     url = "https://raw.githubusercontent.com/mmatthieu1290/svm-socp-lp-solvers/main/datos_Titanic.xlsx"
@@ -159,12 +129,12 @@ This project requires the following dependencies:
 1. **Install the library:**
 
     ```sh
-    pip install git+https://github.com/mmatthieu1290/svm-socp-lp-solvers.git
+    pip install git+https://github.com/mmatthieu1290/socp-lp-solver.git
     ```
-2. **Import the solvers:**
+2. **Import the solver:**
 
     ```sh
-    from svm_socp_lp_solvers import SVM_Lp,SOCP_Lp
+    from socp_lp_solver import SOCP_Lp
     ```
 
 
