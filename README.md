@@ -6,20 +6,7 @@
 
 # SOCP-LP-SOLVER
 
-<em>Empowering Smarter Decisions Through Advanced Optimization</em>
 
-<!-- BADGES -->
-<img src="https://img.shields.io/github/last-commit/mmatthieu1290/socp-lp-solvers?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-<img src="https://img.shields.io/github/languages/top/mmatthieu1290/socp-lp-solvers?style=flat&color=0080ff" alt="repo-top-language">
-<img src="https://img.shields.io/github/languages/count/mmatthieu1290/socp-lp-solvers?style=flat&color=0080ff" alt="repo-language-count">
-
-<em>Built with the tools and technologies:</em>
-
-<img src="https://img.shields.io/badge/Markdown-000000.svg?style=flat&logo=Markdown&logoColor=white" alt="Markdown">
-<img src="https://img.shields.io/badge/TOML-9C4121.svg?style=flat&logo=TOML&logoColor=white" alt="TOML">
-<img src="https://img.shields.io/badge/scikitlearn-F7931E.svg?style=flat&logo=scikit-learn&logoColor=white" alt="scikitlearn">
-<img src="https://img.shields.io/badge/NumPy-013243.svg?style=flat&logo=NumPy&logoColor=white" alt="NumPy">
-<img src="https://img.shields.io/badge/Python-3776AB.svg?style=flat&logo=Python&logoColor=white" alt="Python">
 
 </div>
 <br>
@@ -53,8 +40,8 @@ This project aims to simplify and accelerate the development of SVM-based soluti
 - 🧩 **🔧 Modular Architecture:** Seamlessly integrates with existing ML workflows and scales across modules.
 - 🚀 **⚙️ High-Performance Solvers:** Efficiently handles large-scale SOCP and LP problems for support vector machines.
 - 📊 **📈 Utility Functions:** Provides tools for model inference, including predictions and probability estimates.
-- 🧮 **🔍 Focused on Convex Optimization:** Leverages cvxpy and other libraries for robust, reliable solutions.
-- 🧠 **🤖 Support for Sparse, Robust Models:** Facilitates feature selection and high-dimensional data handling.
+- 🧮 **🔍 Focused on Convex Optimization:** Leverages cvxpy and other libraries for robust, reliable solutions, despite the fact that the original problem is not convex.
+- 🧠 **🤖 Support for Sparse, Robust Models:** Facilitates feature selection and high-dimensional data handling, robust with respect to noise.
 
 ---
 
