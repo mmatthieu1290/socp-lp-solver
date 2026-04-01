@@ -387,7 +387,7 @@ class SOCP_Lp(BaseEstimator, ClassifierMixin):
         while (err > self.tol and iter_ < self.max_iter):    
             
            weighted_abs = cp.multiply(phi_k_abs, w) 
-           obj = cp.Minimize(cp.norm1(weighted_abs) + self.C * cp.sum(xi)) 
+           obj = cp.Minimize(cp.norm1(weighted_abs) + self.C * xi) 
            # ========= Resolver =========
            prob = cp.Problem(obj, constraints)
            prob.solve(solver=cp.ECOS)   
