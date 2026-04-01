@@ -9,33 +9,13 @@ from .utils import prediction_from_w_b,prediction_probas_from_w_b
 class SOCP_Lp(BaseEstimator, ClassifierMixin):
 
     r"""
-    Smoothed sparse Lp-SOCP classifier.
+    Smoothed sparse SOCP_Lp classifier.
 
-    This estimator solves the following optimization problem:
+   This estimator minimizes a p-quasi-norm (0 < p ≤ 1) subject to second order cone
+constraints via Iteratively Reweighted L1 (IRL1), solving a weighted 
+ℓ1 subproblem at each iteration until convergence.
 
-    .. math::
-        \min_{w,b,\xi}\ \sum_{j=1}^n (|w_j|+\varepsilon)^p \;+\; C\sum_{i=1}^2 \xi_i
-        \quad \mathrm{s.t.}\quad
-        \begin{aligned}
-			&({\bf w}, b, \xi) \in \mathbb{R}^{n+2} \\
-			&\text{s.t. } \ w^\top \mu_1 + b \geq 1 - \xi + \kappa(\alpha_1) \|S_1^\top w\|, \\
-			&\quad -(w^\top \mu_2 + b) \geq 1 - \xi + \kappa(\alpha_2) \|S_2^\top w\|, \\
-			&\quad \xi \geq 0
-		\end{aligned}
-
-    The vector :math:`\mu_1` (resp. :math:\mu_2) is the mean value vector of features associated with positive (resp. negative) class.
-    The matrix :math:S_j\in\mathbb{R}^{n\times m_j}, with :math:j\in\{1,2\}, satisfy \sigma_j=S_jS_j^\top, where \sigma_1 (resp. \sigma_2) is the covariance matrix of features asociated with positive (resp. negative) class.   
-
-    The constraint set of the above optimization problem is obtained from the following constraint set thanks to the the multivariate Chebyshev inequality:
-
-    .. math::
-
-    \inf_{\widetilde{\bf x}_j\sim ({\bm\mu}_j,\Sigma_j)} \!\!\! \text{Pr}\{(-1)^{j+1}({\bf w}^{\top }\widetilde{\bf x}_{j}+b)\ge 0\} \geq \alpha_j, \ j=1,2, 
-
-    The notation :math:\widetilde{\bf x}_j\sim ({\bm\mu}_j,\Sigma_j)} means that the distributions :math:\widetilde{\bf x}_j have
-    associated means and covariance matrices :math:({\bm\mu}_j, \Sigma_j) for :math:j = 1, 2.
-
-    It is a robust version of SVM_Lp.
+    It is a robust version with respecto to noise of SVM_Lp.
 
     The smoothing parameter :math:`\varepsilon>0` makes the objective locally
     Lipschitz and avoids singular behavior at :math:`w_j=0`.
@@ -95,9 +75,6 @@ class SOCP_Lp(BaseEstimator, ClassifierMixin):
     n_iter_ : int
         Number of iterations run.
 
-    fitted_ : bool
-        True after calling fit().
-
     n_features_in_ : int
         Number of detected features after calling fit()
 
@@ -141,7 +118,6 @@ class SOCP_Lp(BaseEstimator, ClassifierMixin):
 
     def __init__(self,p=0.5,C=1e4,alpha_1=0.5,alpha_2=0.5,eps=1e-5,tol = 1e-4,max_iter = 100,tol_select_features = 1e-5):
         
-        self.fitted_ = False
         self._p = None
         self.p = p
         self._C = None
@@ -364,9 +340,6 @@ class SOCP_Lp(BaseEstimator, ClassifierMixin):
         
         
         w_old = np.random.randn(n)
-        b_old = np.random.randn(1)
-        
-        xi_old = np.random.rand(1)
 
         phi_k_abs = np.ones(n)
         err = 2 * self.tol
@@ -391,10 +364,8 @@ class SOCP_Lp(BaseEstimator, ClassifierMixin):
            # ========= Resolver =========
            prob = cp.Problem(obj, constraints)
            prob.solve(solver=cp.ECOS)   
-           err = npl.norm(w.value - w_old) + npl.norm(b.value - b_old) + npl.norm(xi.value - xi_old)
+           err = npl.norm(w.value - w_old,np.inf) 
            w_old = w.value
-           b_old = b.value
-           xi_old = xi.value
            phi_k = self.p * (np.abs(w_old)+self.eps) ** (self.p-1)
            phi_k_abs = np.abs(phi_k)          
            self.n_non_zeros_coef_per_iteration_.append(int((np.abs(w_old) > \
@@ -402,9 +373,8 @@ class SOCP_Lp(BaseEstimator, ClassifierMixin):
            iter_ += 1
             
         self.coef_ = w_old
-        self.intercept_ = b_old
-        self.xi = xi_old 
-        self.fitted_ = True
+        self.intercept_ = b.value
+        self.xi = xi.value
         self.n_iter_ = iter_
         self.n_non_zeros_coef_per_iteration_ = np.array(self.n_non_zeros_coef_per_iteration_)		
 
@@ -440,7 +410,7 @@ class SOCP_Lp(BaseEstimator, ClassifierMixin):
 
        X = X.copy() 
         
-       if self.fitted_ == False:
+       if hasattr(self,"coef_") == False:
           error_msg =  "This instance of Lp_SVM instance is not fitted yet. "
           error_msg +=  "Call 'fit' with appropriate arguments before using this estimator."
           raise NotFittedError(error_msg)
@@ -454,7 +424,7 @@ class SOCP_Lp(BaseEstimator, ClassifierMixin):
 
        X = X.copy() 
 
-       if self.fitted_ == False:
+       if hasattr(self,"coef_") == False:
           error_msg =  "This instance of Lp_SVM instance is not fitted yet. "
           error_msg +=  "Call 'fit' with appropriate arguments before using this estimator."
           raise NotFittedError(error_msg) 
