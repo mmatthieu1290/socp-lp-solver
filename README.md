@@ -29,7 +29,7 @@
 
 ## Overview
 
-socp-lp-solver is a Python package that provides advanced solvers for Support Vector Machine (SVM) optimization problems using Second-Order Cone Programming (SOCP). Designed for high-dimensional and large-scale data, it enables efficient, robust, and interpretable machine learning models.
+socp-lp-solver is a Python package that provides advanced solvers for Support Vector Machine (SVM) optimization problems using Second-Order Cone Programming (SOCP). Designed for high-dimensional and large-scale data, it enables efficient, robust with respecto to noise and interpretable machine learning models.
 
 **Authors:** Miguel Carrasco, Julio Lopez, Matthieu Marechal
 
@@ -38,7 +38,7 @@ socp-lp-solver is a Python package that provides advanced solvers for Support Ve
 This project aims to simplify and accelerate the development of SVM-based solutions with cutting-edge convex optimization techniques. The core features include:
 
 - 🧩 **🔧 Modular Architecture:** Seamlessly integrates with existing ML workflows and scales across modules.
-- 🚀 **⚙️ High-Performance Solvers:** Efficiently handles large-scale SOCP and LP problems for support vector machines.
+- 🚀 **⚙️ High-Performance Solvers:** Efficiently handles large-scale SOCP problems for support vector machines.
 - 📊 **📈 Utility Functions:** Provides tools for model inference, including predictions and probability estimates.
 - 🧮 **🔍 Focused on Convex Optimization:** Leverages cvxpy and other libraries for robust, reliable solutions, despite the fact that the original problem is not convex.
 - 🧠 **🤖 Support for Sparse, Robust Models:** Facilitates feature selection and high-dimensional data handling, robust with respect to noise.
@@ -52,10 +52,10 @@ This project aims to simplify and accelerate the development of SVM-based soluti
 This estimator solves the following optimization problem:
 
 $$
-\min_{w,b,\xi}\ \sum_{j=1}^n (|w_j|+\varepsilon)^p + C \sum_{i=1}^2 \xi_i
+\min_{w,b,\xi}\ \sum_{j=1}^n (|w_j|+\varepsilon)^p + C \xi
 \quad \mathrm{s.t.}\quad
 \begin{aligned}
-& (w,b,\xi) \in \mathbb{R}^{n+3} \\
+& (w,b,\xi) \in \mathbb{R}^{n+2} \\
 & w^\top \mu_1 + b \ge 1 - \xi_1 + \kappa(\alpha_1)\|S_1^\top w\|, \\
 & -(w^\top \mu_2 + b) \ge 1 - \xi_2 + \kappa(\alpha_2)\|S_2^\top w\|, \\
 & \xi \ge 0.
@@ -93,8 +93,8 @@ IRL1 for the $\ell_p$-XiSOCP Model ($0 < p < 1$)
 **Input:** <br>
     Training data $(X, y)$<br>
     Parameters: $p, c, \varepsilon > 0$, $\kappa = (\kappa_1, \kappa_2)$<br>
-    Maximum iterations_ Kmax<br>
-    Tolerance: Tol
+    Maximum iterations: max_iter<br>
+    Tolerance: tol
 
 **Preprocessing:** <br>
     Split data into classes A ($y=+1$) and B ($y=-1$)<br>
@@ -120,7 +120,7 @@ $\xi\geq0$
 $\Phi_i^{k+1}=\dfrac{p}{(|w_i^k|+\varepsilon)^{1-p}}$, for $i=1,\cdots,n$<br>
 
 **Step 3:** Check convergence<br>
-if $\|w^{k+1} - w^k\|_\infty < Tol$<br>
+if $\|w^{k+1} - w^k\|_\infty < tol$ or k+1>max_iter <br>
 stop
 
 **Step 4:** $k \leftarrow k + 1$
