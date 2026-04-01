@@ -122,7 +122,6 @@ Initialize:
     $w^{0}$ arbitrary (e.g., constant vector)
 
 Repeat:
-
     Step 1: Solve weighted SOCP subproblem
         minimize   $\|\Phi\otimes w\|_1 + C \xi$
         subject to
