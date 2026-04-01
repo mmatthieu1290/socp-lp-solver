@@ -118,8 +118,8 @@ Preprocessing:
 
 Initialize:
 
-$k = 0$
-$Φ^{0} = 1$  (vector of ones),
+$k = 0$ \\
+$Φ^{0} = 1$  (vector of ones), \\
 $w^{0}$ arbitrary (e.g., constant vector).
 
 Repeat:
