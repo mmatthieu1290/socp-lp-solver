@@ -92,7 +92,7 @@ IRL1 for the $\ell_p$-XiSOCP Model ($0 < p < 1$)
     Training data $(X, y)$<br>
     Parameters: $p, c, \varepsilon > 0$, $\kappa = (\kappa_1, \kappa_2)$<br>
     Maximum iterations: max_iter<br>
-    Tolerance: tol
+    Tolerance: tol<br>
     Factorization method: factorization
 
 **Preprocessing:** <br>
