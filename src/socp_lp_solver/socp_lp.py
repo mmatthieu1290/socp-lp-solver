@@ -341,14 +341,21 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
         A_pos = X[(y==1).reshape((-1,))]
         A_neg = X[(y<=0).reshape((-1,))]
         
-        m_pos = A_pos.shape[0]
-        m_neg = A_neg.shape[0]
+
         
-        mu1 = (1 / m_pos) * A_pos.T@np.ones((m_pos,1))
-        mu2 = (1 / m_neg) * A_neg.T@np.ones((m_neg,1))
-        
-        S1 = (1 / np.sqrt(m_pos)) * (A_pos.T - mu1 @ np.ones((1,m_pos)))
-        S2 = (1 / np.sqrt(m_neg)) * (A_neg.T - mu2 @ np.ones((1,m_neg)))
+        if self.factorization == 'estim':
+           
+            m_pos = A_pos.shape[0]
+            m_neg = A_neg.shape[0]
+            mu1 = (1 / m_pos) * A_pos.T@np.ones((m_pos,1))
+            mu2 = (1 / m_neg) * A_neg.T@np.ones((m_neg,1))
+            S1 = (1 / np.sqrt(m_pos)) * (A_pos.T - mu1 @ np.ones((1,m_pos)))
+            S2 = (1 / np.sqrt(m_neg)) * (A_neg.T - mu2 @ np.ones((1,m_neg)))
+        else:
+           sigma_pos = np.cov(A_pos.T)
+           sigma_neg = np.cov(A_neg.T)
+           S1 = npl.cholesky(sigma_pos)
+           S2 = npl.cholesky(sigma_neg)    
         
         
         w_old = np.random.randn(n)
