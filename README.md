@@ -93,13 +93,14 @@ IRL1 for the $\ell_p$-XiSOCP Model ($0 < p < 1$)
     Parameters: $p, c, \varepsilon > 0$, $\kappa = (\kappa_1, \kappa_2)$<br>
     Maximum iterations: max_iter<br>
     Tolerance: tol
+    Factorization method: factorization
 
 **Preprocessing:** <br>
     Split data into classes A ($y=+1$) and B ($y=-1$)<br>
     Compute class means $\mu_1$, $\mu_2$<br>
     Compute matrices $S_1$, $S_2$:<br>
-        - either via Cholesky of covariance matrices, or<br>
-        - via sample-based estimation
+        - either via Cholesky of covariance matrices if factorization='chol', or<br>
+        - via sample-based estimation if factorization='estim'.
 
 **Initialize:** <br>
 $k = 0$ <br>
