@@ -266,6 +266,7 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
 
     @type.setter
     def type(self,value):
+        print(value)
         if not isinstance(value,str):
             raise TypeError("type must be a string.")
         elif type not in ['chol','estim']:
