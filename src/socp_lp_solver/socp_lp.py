@@ -112,7 +112,7 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
     """
     
 
-    def __init__(self,p=0.5,C=1e4,alpha_1=0.5,alpha_2=0.5,eps=1e-5,tol = 1e-4,max_iter = 100,tol_select_features = 1e-5,type='estim'):
+    def __init__(self,p=0.5,C=1e4,alpha_1=0.5,alpha_2=0.5,eps=1e-5,tol = 1e-4,max_iter = 100,tol_select_features = 1e-5,factorization='estim'):
         
         self._p = None
         self.p = p
@@ -131,8 +131,8 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
         self.max_iter = max_iter  
         self._tol_select_features = None
         self.tol_select_features = tol_select_features
-        self._type = None
-        self.type = type           
+        self._factorization = None
+        self.factorization = factorization         
         
         self.kappa1 = np.sqrt(alpha_1 / (1-alpha_1))
         self.kappa2 = np.sqrt(alpha_2 / (1-alpha_2))
@@ -175,8 +175,8 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
         return self._tol_select_features   
 
     @property
-    def type(self):
-        return self._type     
+    def factorization(self):
+        return self._factorization   
     
 
     @p.setter
@@ -264,15 +264,15 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
                 except AttributeError:
                    _ = 0  
 
-    @type.setter
-    def type(self,value):
-        print(value)
+    @factorization.setter
+    def factorization(self,value):
+
         if not isinstance(value,str):
-            raise TypeError("type must be a string.")
-        elif type not in ['chol','estim']:
-            raise ValueError("type must be 'chol' or 'estim'")
+            raise TypeError("factorization must be a string.")
+        elif value not in ['chol','estim']:
+            raise ValueError("factorization must be 'chol' or 'estim'")
         else:
-            self._type = value                          
+            self._factorization = value                          
             
         
     def fit(self,X,y):
