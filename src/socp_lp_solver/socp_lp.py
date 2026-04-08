@@ -354,9 +354,14 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
         else:
            sigma_pos = np.cov(A_pos.T)
            sigma_neg = np.cov(A_neg.T)
-           S1 = npl.cholesky(sigma_pos)
-           S2 = npl.cholesky(sigma_neg)    
-        
+           try:
+              S1 = npl.cholesky(sigma_pos)
+           except npl.LinAlgError:   
+              S1 = npl.cholesky(sigma_pos + 1e-7 * np.eye(n))    
+           try:
+              S2 = npl.cholesky(sigma_neg)
+           except npl.LinAlgError:   
+              S2 = npl.cholesky(sigma_neg + 1e-7 * np.eye(n))         
         
         w_old = np.random.randn(n)
 
