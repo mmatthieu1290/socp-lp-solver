@@ -1,5 +1,5 @@
 import numpy as np
-import numpy.linalg as npl
+from numpy.linalg import cholesky,LinAlgError,norm
 import cvxpy as cp
 from sklearn.exceptions import NotFittedError
 from sklearn.base import BaseEstimator, ClassifierMixin
@@ -355,13 +355,13 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
            sigma_pos = np.cov(A_pos.T)
            sigma_neg = np.cov(A_neg.T)
            try:
-              S1 = npl.cholesky(sigma_pos)
-           except npl.LinAlgError:   
-              S1 = npl.cholesky(sigma_pos + 1e-7 * np.eye(n))    
+              S1 = cholesky(sigma_pos)
+           except LinAlgError:   
+              S1 = cholesky(sigma_pos + 1e-5 * np.eye(n))    
            try:
-              S2 = npl.cholesky(sigma_neg)
-           except npl.LinAlgError:   
-              S2 = npl.cholesky(sigma_neg + 1e-7 * np.eye(n))         
+              S2 = cholesky(sigma_neg)
+           except LinAlgError:   
+              S2 = cholesky(sigma_neg + 1e-5 * np.eye(n))         
         
         w_old = np.random.randn(n)
 
@@ -388,7 +388,7 @@ constraints via Iteratively Reweighted L1 (IRL1), solving a weighted
            # ========= Resolver =========
            prob = cp.Problem(obj, constraints)
            prob.solve(solver=cp.ECOS)   
-           err = npl.norm(w.value - w_old,np.inf) 
+           err = norm(w.value - w_old,np.inf) 
            w_old = w.value
            phi_k = self.p * (np.abs(w_old)+self.eps) ** (self.p-1)
            phi_k_abs = np.abs(phi_k)          
